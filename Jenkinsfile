@@ -6,6 +6,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
@@ -13,20 +19,23 @@ pipeline {
                 }
             }
         }
+        
         stage('Test') {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // No necesitamos ajustar permisos adicionales porque ya se hizo en el Dockerfile
+                        // Instalar dependencias y ejecutar pruebas
                         sh 'npm install'
                         sh 'npm test'
                     }
                 }
             }
         }
+        
         stage('Deploy') {
             steps {
                 script {
+                    // Ejecutar el contenedor en segundo plano y mapear el puerto 3000
                     docker.image(DOCKER_IMAGE).run('-d -p 3000:3000')
                 }
             }
