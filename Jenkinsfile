@@ -17,7 +17,8 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Crear una carpeta temporal para npm cache y ajustar permisos
+                        // Ajustar los permisos de la carpeta de trabajo y cache de npm
+                        sh 'chown -R $(id -u):$(id -g) /app'
                         sh 'mkdir -p /tmp/.npm && npm config set cache /tmp/.npm --global'
                         sh 'npm install'
                         sh 'npm test'
