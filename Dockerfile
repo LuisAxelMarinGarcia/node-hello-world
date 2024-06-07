@@ -13,17 +13,17 @@ RUN mkdir -p /home/appuser/.npm && chown -R appuser:appgroup /home/appuser
 COPY package*.json ./
 RUN chown -R appuser:appgroup /app
 
-# Cambiar al nuevo usuario
-USER appuser
-
 # Configurar npm para usar el directorio de caché en el home del usuario
 RUN npm config set cache /home/appuser/.npm --global
 
 # Instalar dependencias incluyendo las de desarrollo
 RUN npm install
 
-# Copiar el resto de la aplicación
+# Copiar el resto de la aplicación y cambiar permisos
 COPY --chown=appuser:appgroup . .
+
+# Cambiar al nuevo usuario
+USER appuser
 
 # Exponer el puerto
 EXPOSE 3000
