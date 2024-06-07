@@ -6,12 +6,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
@@ -19,17 +13,17 @@ pipeline {
                 }
             }
         }
-
         stage('Test') {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
+                        // Instalar dependencias nuevamente para asegurar que mocha está disponible
+                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
             }
         }
-
         stage('Deploy') {
             steps {
                 script {
