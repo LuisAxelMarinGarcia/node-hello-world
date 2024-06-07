@@ -19,6 +19,9 @@ RUN npm config set cache /home/appuser/.npm --global
 # Instalar dependencias incluyendo las de desarrollo
 RUN npm install
 
+# Instalar mocha globalmente
+RUN npm install -g mocha
+
 # Copiar el resto de la aplicación y cambiar permisos
 COPY --chown=appuser:appgroup . .
 
