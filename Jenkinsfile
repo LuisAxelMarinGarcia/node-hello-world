@@ -24,8 +24,6 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Ajustar permisos de directorios antes de ejecutar npm install
-                        sh 'sudo chown -R appuser:appgroup /app /home/appuser'
                         sh 'npm install'
                         sh 'npm test'
                     }
@@ -36,10 +34,10 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Ejecutar el contenedor en segundo plano y mapear el puerto 3000
                     docker.image(DOCKER_IMAGE).run('-d -p 3000:3000')
                 }
             }
         }
     }
 }
+

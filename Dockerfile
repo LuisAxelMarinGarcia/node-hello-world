@@ -6,7 +6,7 @@ WORKDIR /app
 # Crear un usuario y grupo no-root
 RUN groupadd -r appgroup && useradd -r -g appgroup -d /home/appuser -m appuser
 
-# Copiar los archivos de paquete y cambiar permisos
+# Copiar y cambiar permisos de archivos
 COPY package*.json ./
 RUN chown -R appuser:appgroup /app /home/appuser
 
@@ -16,11 +16,12 @@ USER appuser
 # Instalar dependencias
 RUN npm install
 
-# Copiar el resto de la aplicación
+# Copiar el resto de la aplicación y cambiar permisos
 COPY . .
+RUN chown -R appuser:appgroup /app
 
 # Exponer el puerto
 EXPOSE 3000
 
-# Comando por defecto para ejecutar la aplicación
+# Comando por defecto para correr la aplicación
 CMD ["node", "index.js"]
