@@ -17,9 +17,7 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Ajustar los permisos de la carpeta .npm
-                        sh 'sudo chown -R $(id -u):$(id -g) /app'
-                        sh 'npm install'
+                        sh 'npm install --unsafe-perm'
                         sh 'npm test'
                     }
                 }
