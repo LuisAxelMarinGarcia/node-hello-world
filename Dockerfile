@@ -22,7 +22,7 @@ RUN npm install
 # Copiar el resto de la aplicación y cambiar permisos
 COPY --chown=appuser:appgroup . .
 
-# Cambiar permisos de todos los archivos en /home/appuser
+# Corregir los permisos en el directorio de caché de npm
 RUN chown -R appuser:appgroup /home/appuser/.npm
 
 # Cambiar al nuevo usuario
