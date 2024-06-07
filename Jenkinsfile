@@ -17,7 +17,9 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        sh 'npm install --unsafe-perm'
+                        // Crear una carpeta temporal para npm cache y ajustar permisos
+                        sh 'mkdir -p /tmp/.npm && npm config set cache /tmp/.npm --global'
+                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
