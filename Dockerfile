@@ -1,38 +1,38 @@
 FROM node:14
 
-# Crear un directorio de trabajo
+# Create a working directory
 WORKDIR /app
 
-# Crear un usuario y grupo no-root
+# Create a non-root user and group
 RUN groupadd -r appgroup && useradd -r -g appgroup -d /home/appuser -m appuser
 
-# Crear el directorio de inicio para el usuario y ajustar permisos
+# Create the home directory for the user and adjust permissions
 RUN mkdir -p /home/appuser/.npm && chown -R appuser:appgroup /home/appuser
 
-# Copiar y cambiar permisos de archivos
+# Copy package files and change permissions
 COPY package*.json ./
 RUN chown -R appuser:appgroup /app
 
-# Configurar npm para usar el directorio de caché en el home del usuario
+# Configure npm to use the cache directory in the user's home
 RUN npm config set cache /home/appuser/.npm --global
 
-# Instalar dependencias incluyendo las de desarrollo
+# Install dependencies, including devDependencies
 RUN npm install
 
-# Instalar mocha globalmente
+# Install mocha globally
 RUN npm install -g mocha
 
-# Copiar el resto de la aplicación y cambiar permisos
+# Copy the rest of the application and change permissions
 COPY --chown=appuser:appgroup . .
 
-# Corregir los permisos en el directorio de caché de npm
+# Fix permissions on the npm cache directory
 RUN chown -R appuser:appgroup /home/appuser/.npm
 
-# Cambiar al nuevo usuario
+# Switch to the new user
 USER appuser
 
-# Exponer el puerto
+# Expose the application port
 EXPOSE 3000
 
-# Comando por defecto para correr la aplicación
+# Default command to run the application
 CMD ["node", "index.js"]
