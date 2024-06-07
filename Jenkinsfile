@@ -19,19 +19,20 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Test') {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Instalar dependencias y ejecutar pruebas
+                        // Ajustar permisos de directorios antes de ejecutar npm install
+                        sh 'sudo chown -R appuser:appgroup /app /home/appuser'
                         sh 'npm install'
                         sh 'npm test'
                     }
                 }
             }
         }
-        
+
         stage('Deploy') {
             steps {
                 script {
