@@ -4,14 +4,11 @@ FROM node:14
 WORKDIR /app
 
 # Crear un usuario y grupo no-root
-RUN groupadd -r appgroup && useradd -r -g appgroup -d /home/appuser appuser
-
-# Crear el directorio de inicio para el usuario y ajustar permisos
-RUN mkdir /home/appuser && chown -R appuser:appgroup /home/appuser
+RUN groupadd -r appgroup && useradd -r -g appgroup -d /home/appuser -m appuser
 
 # Copiar y cambiar permisos de archivos
 COPY package*.json ./
-RUN chown -R appuser:appgroup /app
+RUN chown -R appuser:appgroup /app /home/appuser
 
 # Cambiar al nuevo usuario
 USER appuser

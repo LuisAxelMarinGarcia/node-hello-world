@@ -17,9 +17,7 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Ajustar los permisos de la carpeta de trabajo y cache de npm
-                        sh 'chown -R $(id -u):$(id -g) /app /home/appuser'
-                        sh 'mkdir -p /home/appuser/.npm && npm config set cache /home/appuser/.npm --global'
+                        // No necesitamos ajustar permisos adicionales porque ya se hizo en el Dockerfile
                         sh 'npm install'
                         sh 'npm test'
                     }
