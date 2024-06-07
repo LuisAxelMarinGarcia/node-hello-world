@@ -16,7 +16,7 @@ USER appuser
 # Instalar dependencias
 RUN npm install
 
-# Copiar el resto de la aplicación
+# Copiar el resto de la aplicación y cambiar permisos
 COPY --chown=appuser:appgroup . .
 
 # Exponer el puerto

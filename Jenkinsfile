@@ -24,7 +24,6 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        // Instalar dependencias y ejecutar pruebas
                         sh 'npm test'
                     }
                 }
