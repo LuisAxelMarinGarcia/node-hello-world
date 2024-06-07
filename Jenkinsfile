@@ -6,6 +6,11 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/LuisAxelMarinGarcia/node-hello-world'
+            }
+        }
         stage('Build') {
             steps {
                 script {
@@ -17,7 +22,6 @@ pipeline {
             steps {
                 script {
                     docker.image(DOCKER_IMAGE).inside {
-                        sh 'npm install'
                         sh 'npm test'
                     }
                 }
@@ -29,6 +33,17 @@ pipeline {
                     docker.image(DOCKER_IMAGE).run('-d -p 3000:3000')
                 }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Build and Tests succeeded!'
+        }
+        failure {
+            echo 'Build or Tests failed!'
         }
     }
 }
