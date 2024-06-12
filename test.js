@@ -3,13 +3,13 @@ const express = require('express');
 
 const app = express();
 app.get('/api/v1/welcome', (req, res) => {
-    res.status(200).send('siuuu');
+    res.status(200).send('Siuuuuuuuuu');
 });
 
 describe('GET /api/v1/welcome', () => {
-    it('Siuuuu', (done) => {
+    it('Siuuuuuuuuu', (done) => {
         request(app)
             .get('/api/v1/welcome')
-            .expect('siuuuuuuuu', done);
+            .expect('Siuuuuuuuuu', done);
     });
 });
